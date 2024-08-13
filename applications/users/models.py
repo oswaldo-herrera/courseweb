@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from datetime import timedelta,datetime
-import numpy as np
+
 
 class User(AbstractUser):
     
