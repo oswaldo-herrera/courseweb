@@ -1,0 +1,309 @@
+{% extends "partials/layout-vertical.html" %}
+<!---->
+{% load static %}
+<!---->
+{% block title %}Dashboard{% endblock title %}
+<!---->
+{% block extra_css %}
+<style>
+  .custom-card {
+    border-top-left-radius: 50% !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 50% !important;
+  }
+</style>
+
+<!---->
+{% endblock extra_css %}
+<!---->
+{% block topbar %}
+<!---->
+<!---->
+{%include "partials/topbar.html" with pagetitle="Título de Inicio"%}
+<!---->
+{% endblock topbar %}
+<!---->
+{% block content %}
+
+<style>
+  .number-range {
+    position: relative;
+    display: block;
+    font-size: 20px;
+    color: #d2ab4b;
+    font-weight: 400;
+  }
+  .custom-card {
+    width: 40rem;
+    /*border-radius: 50px !important;*/
+    border-radius: 5% 20% 5% 20% !important;
+  }
+  input-gral {
+    border: none;
+    border-bottom: 2px solid white; /* Contorno inferior blanco */
+    background-color: #f5f5f5; /* Fondo gris claro */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra debajo */
+    padding: 8px;
+    margin-bottom: 15px;
+    outline: none; /* Quita el contorno al enfocar */
+  }
+
+  .input-range {
+    width: 400px;
+    height: 40px;
+    -webkit-appearance: none;
+    background: #343a40;
+    outline: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 1);
+  }
+
+  .input-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 70px;
+
+    background: #d2ab4b;
+    cursor: pointer;
+    border: 0px solid #343a40;
+    box-shadow: -407px 0 0 400px #d2ab4b;
+  }
+
+
+
+  /*   ********estilos simulador *******/
+
+
+    .card-simulador {
+        width: 100%;
+        border: 1px solid #ddd; /* Borde delgada */
+        border-radius: 10px 10px 0px 0px; /* Bordes redondeados */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9); /* Sombra suave */
+        background-color: #333;
+        
+    }
+        
+    .card-simulador2 {
+        width: 100%;
+        border: 1px solid #ddd; /* Borde delgada */
+        border-radius: 0px 0px 10px 10px; /* Bordes redondeados */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9); /* Sombra suave */
+        
+        
+    }
+    .card-simulador3 {
+        width: 100%;
+        border: 1px solid #ddd; /* Borde delgada */
+        border-radius: 10px 10px 10px 10px; /* Bordes redondeados */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9); /* Sombra suave */
+        
+        
+    }
+        
+    .color-titulo{
+        color: #dfbb2f;
+    }
+
+    .number-range-prestamo {
+        position: relative;
+        display: block;
+        font-size: 20px;
+        color: #d2ab4b;
+        font-weight: 400;
+        text-shadow: 0 0 1px rgba(255, 255, 255, 0.8);
+    }
+
+     .input-range-container {
+        position: relative;
+        width: 100%;
+    }
+    
+    .input-range {
+        width: 400px;
+        height: 40px;
+        -webkit-appearance: none;
+        background: #343a40;
+        outline: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 1);
+        position: relative;
+        z-index: 2;
+        
+        
+    }
+    
+    .input-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 10px;
+        height: 70px;
+        background: #d2ab4b;
+        cursor: pointer;
+        border: 0px solid #343a40;
+        box-shadow: -407px 0 0 400px #d2ab4b;
+        z-index: 2;
+    }
+    
+    hr{
+        margin: 0;
+        padding: 0;
+    }
+
+    .color-orange{
+        color: #d2ab4b;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .boton{
+        background-color: #333;
+        border: #ddd 1px;
+        color: #cecbcb;
+        font-size: 15px;
+    }
+    .boton:hover{
+        background-color: #ddd;
+    }
+    .text-description{
+      color: #dfbb2f;
+    }
+
+    /*   ********fin estilos simulador *******/
+
+    .select-style{
+      
+      background: #E3E9ED;
+      width:50%;
+      color:#0000;
+      padding: 1px;
+    }
+
+    .select-style option:hover {
+      background-color: #10151b !important; /* Cambia este color al que desees */
+      color: rgb(184, 21, 21); /* Cambia este color al que desees */
+    }
+
+    .fondo-boton{
+      background-color: #343A40;
+      
+    }
+    .fondo-boton2{
+      background-color: #E3E9ED;
+      color:#0000
+      
+    }
+
+    .fondo-boton3{
+      background: #E3E9ED;
+      border-color: #333333;
+    }
+
+    /*banner*/
+    
+    .banner {
+      
+      /*background: url('https://via.placeholder.com/1920x600') no-repeat center center;
+      background-size: cover;*/
+      height: 150px;
+      border-radius:5px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      
+    }
+
+    /*banner*/
+
+    .glass-card {
+      background: rgba(38, 38, 38, 0.215); /* White background with opacity */
+      /*border-radius: 15px;  Rounded corners */
+      backdrop-filter: blur(10px); /* Blur effect */
+      -webkit-backdrop-filter: blur(10px); /* Safari support */
+      box-shadow: 0 4px 30px rgba(8, 8, 8, 0.251); /* Light shadow */
+      border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+      border-radius: 0% 0% 20% 0% 
+    }
+
+  </style>
+
+  <div class="row "> 
+    <div class="col-12">
+
+      <div id="carouselExampleControls" class="carousel slide mb-4" data-bs-ride="carousel">
+        <div class="carousel-inner banner">
+          <div class="carousel-item active">
+            <img src="../../static/images/landing/ban.jpg" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="../../static/images/landing/bocinas.png" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS-HBbzV38MLLgChHoJ9T9bNZN9NvTxTMKuw&s" class="d-block w-100" alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    
+    </div>
+
+    <div class="col-12">
+
+    <div class="card glass-card " style="width: 18rem;">
+        <img src="../../static/images/landing/back_2.jpg" class="card-img-top rounded-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Videos</h5>
+          <p class="card-text">Some quick example text to build on the </p>
+          <a href="{% url 'dashboard_app:video_catalog' %}" class="btn btn-outline-secondary btn-sm">Ver Catálogo</a>
+        </div>
+      </div>
+    </div>
+    
+    
+  </div>
+  
+
+
+
+
+  
+
+
+
+  
+
+ 
+
+
+{% endblock content %} {% block extra_js %}
+
+
+<!-- knob plugin -->
+<script src="{% static 'libs/jquery-knob/jquery.knob.min.js' %}"></script>
+
+
+<!--Morris Chart-->
+<script src="{% static 'libs/morris.js06/morris.min.js' %}"></script>
+<script src="{% static 'libs/raphael/raphael.min.js' %}"></script>
+
+<!-- Dashboar init js-->
+<script src="{% static 'js/pages/dashboard.init.js' %}"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad"></script>
+
+
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2"></script> -->
+
+{% endblock extra_js %}
+
+

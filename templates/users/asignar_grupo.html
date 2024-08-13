@@ -1,0 +1,31 @@
+{% extends "dashboard/index.html" %}
+
+{% block content %}
+<h2>Asignar Grupo a Usuario</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="user">Seleccionar Usuario:</label>
+        <select name="user" id="user" class="form-control">
+            <option value="">Seleccione un usuario</option>
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }} - {{ user.email }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="group">Seleccionar Grupo:</label>
+        <select name="group" id="group" class="form-control">
+            <option value="">Seleccione un grupo</option>
+            {% for group in groups %}
+                <option value="{{ group.id }}">{{ group.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <br>
+    <button type="submit" class="btn btn-outline-dark btn-sm rounded">Guardar</button>
+    <a href="{% url 'user_app:listar_grupos' %}" class="btn btn-outline-danger btn-sm rounded">Cancelar</a>
+</form>
+{% endblock %}

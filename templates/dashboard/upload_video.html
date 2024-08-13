@@ -1,0 +1,29 @@
+{% load static %}
+<div class="modal-dialog modal-md">
+    <div class="modal-content " style="background-color:black; color:#fff; border-radius: 5% 5% 5% 5% ; box-shadow: 0 4px 30px rgba(8, 8, 8, 0.251);" >
+        <div class="modal-header">
+            <h4 class="modal-title text-white" id="myModalLabel">Sube tu video</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div> 
+        
+        <div class="container p-4 ">
+            <form method="post" action="{% url 'dashboard_app:upload_video'  %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-outline-secondary btn-sm">Subir</button>
+            </form>
+        </div>
+        
+
+
+    </div>  
+</div>
+
+
+
+
+
+
+

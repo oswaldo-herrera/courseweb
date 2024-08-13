@@ -1,0 +1,133 @@
+{% load static %}
+  <div class="modal-dialog modal-md">
+    <div class="modal-content" style="background-color:black; color:#fff; border-radius: 5% 5% 5% 5% ; box-shadow: 0 4px 30px rgba(8, 8, 8, 0.251);">
+      <div class="modal-header">
+        <h4 class="modal-title text-white" id="myModalLabel">Editar Usuario</h4>
+        <button type="button" class="close" data-bs-dismiss="modal">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>   
+
+      
+      <form
+        method="POST"
+        enctype="multipart/form-data"
+        action="{% url 'user_app:editar_usuarios' object.id %}"
+      >
+        {% csrf_token %}
+        <div class="modal-body">
+
+            
+
+            <div class="tab-content mt-2">
+                <div class="tab-pane fade active show mt-1" id="datos_personales">
+
+                    <div class="row ">
+                         
+                        <div class="col mb-3">                            
+                            <label for="email">Usuario:</label>                            
+                                {{form.email}}                           
+                        </div>
+
+                        <div class="col mb-3">
+                             <label  for="first-name">Nombre:  </label>
+                              {{form.first_name}}
+                        </div>
+                                          
+                    </div>
+
+                    <div class="row">
+
+                         
+                        <div class="col  mb-3">                            
+                            <label  for="second-name">Apellido:</label>
+                            {{form.last_name}}                                
+                        </div>
+
+                        <div class="col  mb-3">                            
+                            <label for="first-name">Apellido:</label>
+                                {{form.second_name}}                                
+                        </div>
+                    </div>
+
+                    <div class="row ">
+                        
+                        <div class="col  mb-3">
+                            <label for="first-name">Fecha Nac. : </label>
+                            {{form.fecha_nac}}
+                        </div>
+
+                        <div class="col  mb-3">
+                            <label for="first-name">Teléfono particular: </label>
+                            {{form.telefono_particular}}                             
+                        </div>
+
+                    </div>
+                    
+                    <div class="row ">                    
+                        <div class="col  mb-3 ">                            
+                            <label for="first-name">Facebook:
+                            </label>                            
+                            {{form.facebook}}                        
+                        </div>
+                        <div class="col  mb-3 ">                            
+                            <label for="first-name">Foto Perfil:
+                            </label>                            
+                            {{form.imagen_perfil}}                        
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col  mb-3 ">                            
+                            <label for="first-name">Gmail:
+                            </label>                            
+                            {{form.gmail}}                        
+                        </div>
+                        <div class="col  mb-3 ">                            
+                            <label for="first-name">Twitter:
+                            </label>                            
+                            {{form.twitter}}                        
+                        </div>                    
+                    </div>
+                    <div class="row ">
+                        <div class="col  mb-3 ">                            
+                            <label for="first-name">GitHub:
+                            </label>                            
+                            {{form.github}}                        
+                        </div>
+                        <div class="col  mb-3 ">                            
+                            <label for="first-name">Descripción:
+                            </label>                            
+                            {{form.descripcion}}                        
+                        </div>
+                    </div>
+                    
+
+                </div>
+
+               
+
+            </div>
+         
+
+          
+
+          <div class="modal-footer">
+             
+
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+           
+            <button type="submit" class="btn btn-outline-secondary btn-sm">
+              Actualizar Usuario
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

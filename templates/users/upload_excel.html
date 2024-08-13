@@ -1,0 +1,22 @@
+{% extends "dashboard/index.html" %}
+<!---->
+{% load static %}
+
+
+{% block content %}
+
+<h4>Cargar archivo por medio de un Excel</h4>
+<p>Nota: Recuerda de no duplicar el correo electronico en tu tabla excel por custiones de duplicidad de usuario.</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <br>
+        <button type="submit" class="btn btn-secondary">Cargar archivo</button>
+    </form>
+
+    <div class="mt-3">
+        <a class="btn btn-outline-secondary btn-sm border" href="../../static/excel_masivo/registro_usuarios.xlsx" download>Descargar formato de excel</a>
+    </div>
+
+
+{% endblock content %}

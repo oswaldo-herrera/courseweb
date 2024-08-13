@@ -1,0 +1,369 @@
+{% load static %}
+{% load permissions_tags %}
+
+<style>
+  .texto-blanco {
+    color: #c5c9cd;
+  }
+
+  .texto-blanco:hover {
+    color: #ffffff;
+  }
+  .bgnegro{
+    background:#000 !important;
+    border-radius: 0% 0% 20% 0% !important;
+  }
+</style>
+<!-- ========== Left Sidebar Start ========== -->
+<div class="left-side-menu bgnegro">
+  <div class="h-100" data-simplebar>
+    <!-- User box -->
+    <div class="user-box text-center mb-3">
+     {% if user.imagen_perfil %}
+        <img
+          src="{{ user.imagen_perfil.url }}"
+          alt="user-img"
+          title="Mat Helme"
+          class="rounded-circle img-thumbnail avatar-md"
+        />
+      {% else %}
+       <!-- static 'images/landing/yaab_corp.png'  -->
+        <img
+          src="{% static 'images/landing/back_3.jpg'%}"
+          alt="user-img"
+          title="Mat Helme"
+          class="rounded-circle img-thumbnail avatar-md"
+        />
+      {% endif %}
+
+      <div class="dropdown ">
+        <a
+          href="#"
+          class="user-name dropdown-toggle h5 mt-2 mb-1 d-block"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          >{{user.first_name}} {{user.last_name}}</a
+        >
+        <div class="dropdown-menu user-pro-dropdown mx-auto">
+          <!-- item-->
+          <a href="javascript:void(0);" class="dropdown-item notify-item d-none">
+            <i class="fe-user me-1"></i>
+            <span>My Account</span>
+          </a>
+
+          <!-- item-->
+          <a href="javascript:void(0);" class="dropdown-item notify-item d-none">
+            <i class="fe-settings me-1"></i>
+            <span>Settings</span>
+          </a>
+
+          <!-- item-->
+          <a href="javascript:void(0);" class="dropdown-item notify-item d-none">
+            <i class="fe-lock me-1"></i>
+            <span>Lock Screen</span>
+          </a>
+
+          <!-- item-->
+          <a href="{% url 'account_logout' %}" class="btn btn-outline-secondary border border-light  notify-item">
+            <i class="fe-log-out me-1"></i>
+            <span>Cerrar Sesion</span>
+          </a>
+          <a href="{% url 'user_app:change_password' %}" class="btn btn-outline-secondary border border-light  notify-item">
+            <i class="fa fa-lock"></i>
+            <span>Cambiar Contraseña</span>
+          </a>
+        </div>
+      </div>
+
+      <p class="text-muted left-user-info">{{user.rfc}}</p>
+
+      <ul class="list-inline d-none">
+        <li class="list-inline-item">
+          <a href="#" class="text-muted left-user-info">
+            <i class="mdi mdi-cog"></i>
+          </a>
+        </li>
+
+        <li class="list-inline-item">
+          <a href="#">
+            <i class="mdi mdi-power"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!--- Sidemenu -->
+    <div id="sidebar-menu">
+      <ul id="side-menu">
+        
+        <li>
+          <a href="{% url 'dashboard_app:index' %}">
+            <!-- <iconify-icon icon="mdi:view-dashboard"></iconify-icon> -->
+            <i class="mdi mdi-home" style="color: #ffff"></i>
+            <!-- <span class="badge rounded-pill float-end">9+</span> -->
+            <span class="texto-blanco"> Inicio </span>
+          </a>
+        </li>
+        
+        
+        
+        {% if request.user|tiene_permiso:"dashboard.view_prestamo" or request.user|tiene_permiso:"users.view_user" or request.user|tiene_permiso:"dashboard.view_simuladorprueba" or request.user|tiene_permiso:"dashboard.view_credito_cancelado" %}
+        <li class="menu-title">Panel de administración</li>
+        {% endif %}
+        
+        {% comment %} {% if permisos.puede_ver_productos %} {% endcomment %}
+        {% if request.user|tiene_permiso:"dashboard.view_prestamo" %}
+          <li>
+            <a href="#sideBarProductos" data-bs-toggle="collapse">
+              <i class="mdi mdi-hand-pointing-right" style="color: #ffff"></i>
+              <span class="texto-blanco">Contenido </span>
+              <span class="menu-arrow" style="color: #ffff"></span>
+            </a>
+            <div class="collapse" id="sideBarProductos">
+              <ul class="nav-second-level">
+                
+                <li class="d-none">               
+                  <a href="{% url 'dashboard_app:upload_video' %}">
+                    <span class="texto-blanco">Subir Video</span>
+                  </a>
+                </li>
+                <li>               
+                  <a href="{% url 'dashboard_app:video_catalog' %}">
+                    <span class="texto-blanco">Videos</span>
+                  </a>
+                </li>
+                <li>               
+                  <a href="{% url 'dashboard_app:audio_list' %}">
+                    <span class="texto-blanco">Audios</span>
+                  </a>
+                </li> 
+                <li>               
+                  <a href="{% url 'dashboard_app:pdf_list' %}">
+                    <span class="texto-blanco">Libros</span>
+                  </a>
+                </li> 
+                
+                
+              </ul>
+            </div>
+          </li>
+        {%endif%}
+        
+        {% if request.user|tiene_permiso:"users.view_user" %}
+        <li>
+          <a href="#sideBarUsuarios" data-bs-toggle="collapse">
+            <i class="mdi mdi-account-multiple" style="color: #ffff"></i>
+            <span class="texto-blanco"> Perfil </span>
+            <span class="menu-arrow" style="color: #ffff"></span>
+          </a>
+          <div class="collapse" id="sideBarUsuarios">
+            <ul class="nav-second-level">
+              
+             
+
+              
+              <li class="">
+                <!--url 'templates'-->
+                <a href="{% url 'user_app:lista_usuarios_general' %}"> <span class="texto-blanco">Editar</span></a>
+              </li>
+             
+
+              {% if request.user|has_group:"Administrador General" %}
+              <li class="">
+                <!--url 'templates'-->
+                <a href="{% url 'user_app:listar_grupos' %}"> <span class="texto-blanco">Roles</span></a>
+              </li>
+              {% endif %}
+              
+              
+            </ul>
+          </div>
+        </li>
+        {%endif%}
+       
+
+{% comment %}         
+        {% if request.user|tiene_permiso:"dashboard.view_simuladorprueba" %}
+        <li>
+          <a href="#sideBarAdministrativo" data-bs-toggle="collapse">
+            <i class="mdi mdi-credit-card-multiple" style="color: #ffff"></i>
+            <span class="texto-blanco"> Créditos </span>
+            <span class="menu-arrow" style="color: #ffff"></span>
+          </a>
+          <div class="collapse" id="sideBarAdministrativo">
+            <ul class="nav-second-level">
+              
+              
+               <li>
+                <!--url 'templates'-->
+                <a href="{% url 'user_app:registrar_credito' %}"> <span class="texto-blanco">Registrar crédito</span></a>
+              </li>
+               <li>
+                <!--url 'templates'-->
+                <a href="{% url 'credit_personal_app:bandeja_solicitud_html' %}"> <span class="texto-blanco">Autorización de solicitudes</span></a>
+              </li>
+
+             
+
+              <li class="">
+                <!--url 'estado de cuenta'-->
+                <a href="{% url 'calificaciones_app:estado_cuenta_pagos' %}"> <span class="texto-blanco">Estado de cuenta</span></a>
+              </li>
+              
+            </ul>
+          </div>
+        </li>
+        {%endif%}
+       
+        {% if request.user|tiene_permiso:"dashboard.view_credito_cancelado" %}
+        <li>
+          <a href="#sideBarCobranza" data-bs-toggle="collapse">
+            <i class="mdi mdi-currency-usd" style="color: #ffff"></i>
+            <span class="texto-blanco"> Cobranza </span>
+            <span class="menu-arrow" style="color: #ffff"></span>
+          </a>
+          <div class="collapse" id="sideBarCobranza">
+            <ul class="nav-second-level">
+              
+
+              
+              <li >
+                <!--url 'templates'-->
+                <a href="{% url 'calificaciones_app:estatus_credito' %}"> <span class="texto-blanco">Cuentas por cobrar</span></a>
+              </li>
+              
+              
+              <li >
+                
+                <a href="{% url 'calificaciones_app:notificaciones' %}" > <span class="texto-blanco">Notificaciones</span></a>
+              </li>
+              <li >
+                
+                <a href="{% url 'calificaciones_app:creditos_cancelados' %}" > <span class="texto-blanco">Creditos cancelados</span></a>
+              </li>
+              <li >
+               
+                <a href="{% url 'calificaciones_app:convenio' %}" > <span class="texto-blanco">Convenios</span></a>
+              </li>
+
+              
+            </ul>
+          </div>
+        </li>
+        {%endif%}
+
+
+
+        <li>
+          <a href="#sideBarJuridico" data-bs-toggle="collapse">
+            <i class="mdi mdi-currency-usd" style="color: #ffff"></i>
+            <span class="texto-blanco"> Jurídico </span>
+            <span class="menu-arrow" style="color: #ffff"></span>
+          </a>
+          <div class="collapse" id="sideBarJuridico">
+            <ul class="nav-second-level">
+              
+
+              <li >
+                <!--url 'tablero BI'-->
+                <a href="{% url 'calificaciones_app:cobranza_juridico'  %}"> <span class="texto-blanco">Casos</span></a>
+              </li>
+              
+
+              
+            </ul>
+          </div>
+        </li>
+
+
+        <li>
+          <a href="#sideBarReportes" data-bs-toggle="collapse">
+            <i class="mdi mdi-currency-usd" style="color: #ffff"></i>
+            <span class="texto-blanco"> Reportes </span>
+            <span class="menu-arrow" style="color: #ffff"></span>
+          </a>
+          <div class="collapse" id="sideBarReportes">
+            <ul class="nav-second-level">
+              
+
+              <li >
+                <!--url 'tablero BI'-->
+                <a href="{% url 'calificaciones_app:vista_reporte_clientes' %}"> <span class="texto-blanco">Cartera</span></a>
+              </li>
+              
+
+              
+            </ul>
+          </div>
+        </li>
+
+
+       
+        <li>
+          <a href="#sideBarConsultas" data-bs-toggle="collapse">
+            <i class="mdi mdi-hand-pointing-right" style="color: #ffff"></i>
+            <span class="texto-blanco"> Consultas </span>
+            <span class="menu-arrow" style="color: #ffff"></span>
+          </a>
+          <div class="collapse" id="sideBarConsultas">
+            <ul class="nav-second-level">
+
+              <li>
+                <!--url 'templates'-->
+                <a href="{% url 'credit_personal_app:confirmados' %}"> <span class="texto-blanco">Solicitudes</span></a>
+              </li>
+
+              <li >
+                <!--url 'templates'-->
+                <a href="{% url 'calificaciones_app:control_calificaciones' %}"> <span class="texto-blanco">Calificaciones</span></a>
+              </li>
+              
+               <li>
+                <!--url 'templates'-->
+                <a href="{% url 'calificaciones_app:estatus_credito_estatico' %}"> <span class="texto-blanco">Estatus Creditos</span></a>
+              </li>
+              
+              
+            </ul>
+          </div>
+        </li>
+        {% endcomment %}
+
+        
+        <li class="menu-title mt-2">General usuarios</li>
+       
+
+        <li>
+          <a href="#sidebarUsuarios" data-bs-toggle="collapse">
+            <i class="mdi mdi-help-circle" style="color: #ffff"></i>
+            <span class="texto-blanco"> Ayuda </span>
+            <span class="menu-arrow" style="color: #ffff"></span>
+          </a>
+          <div class="collapse" id="sidebarUsuarios">
+            <ul class="nav-second-level">
+              <li>
+                <!--url 'inbox'-->
+                <a href="">
+                  <span class="texto-blanco">Preguntas y repuestas</span>
+                </a>
+              </li>
+
+              
+               <li class="d-none">
+                <!--url 'templates'-->
+                <a href=""> <span class="texto-blanco">Buró de Crédito</span></a>
+              </li>
+              
+              
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!-- End Sidebar -->
+
+    <div class="clearfix"></div>
+  </div>
+  <!-- Sidebar -left -->
+</div>
+<!-- Left Sidebar End -->

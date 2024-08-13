@@ -1,0 +1,156 @@
+{% extends "dashboard/index.html" %}
+<!---->
+{% load static %}
+{% load permissions_tags %}
+
+
+<!---->
+{% block title %}Datatables{% endblock title %}
+<!---->
+{% block extra_css %}
+
+<!-- third party css -->
+<link
+  href="{% static 'libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/datatables.net-select-bs5/css//select.bootstrap5.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<!-- third party css end -->
+
+{% endblock extra_css %}
+<!---->
+{% block topbar %}
+<!---->
+<!---->
+{% include "partials/topbar.html" with pagetitle="Videos" %}
+<!---->
+{% endblock topbar %}
+<!---->
+{% block content %}
+
+<style>
+    .video-thumbnail {
+        cursor: pointer;
+        transition: transform 0.3s ease; /* Transición suave */
+    }
+
+    .video-thumbnail:hover {
+        transform: scale(1.1); /* Aumenta el tamaño en un 10% */
+    }
+ 
+    .glass-card {
+        background: #000000; /* White background with opacity */
+        /*border-radius: 15px;  Rounded corners */
+        backdrop-filter: blur(10px); /* Blur effect */
+        -webkit-backdrop-filter: blur(10px); /* Safari support */
+        box-shadow: 0 4px 30px rgba(8, 8, 8, 0.251); /* Light shadow */
+        border: 1px solid rgba(255, 255, 255, 0.3); 
+        border-radius: 5% ;
+    }
+
+    .card-img-top {
+        height: 200px; /* Altura fija para la imagen */
+        width: 100%; /* Ancho completo del contenedor */
+        object-fit: cover; /* La imagen cubre todo el espacio disponible manteniendo el aspecto */
+    }
+    
+</style>
+
+<div class="container mt-2">
+    <div class="d-flex justify-content-between mb-3">
+        <h2>Listado de PDFs</h2>
+        <button type="button" class="btn btn-outline-secondary btn-sm "  data-bs-toggle="modal" data-bs-target="#subirPdfModal" onclick="subirPdfModal('{% url 'dashboard_app:upload_pdf'  %}')">
+            Subir PDF
+        </button>
+    </div>
+
+    <div class="row">
+        {% for pdf in pdfs %}
+            
+            <div class="col-md-3">
+                <div class="card mb-3 audio-thumbnail glass-card video-thumbnail ">
+                    <img src="{{ pdf.image.url }}" class="card-img-top " alt="{{ pdf.title }}">
+                    <div class="card-body m-0 p-0">                        
+                        <h5 class="card-title text-white text-center pt-2" style="margin-left:10px;">{{ pdf.title }}</h5>
+                        <a href="{{ pdf.file.url }}" class="btn btn-outline-secondary btn-sm w-100 mt-2" download>Descargar PDF</a>
+                    </div>
+                </div>
+            </div>
+
+            
+        {% endfor %}
+    </div>
+
+    <!-- Paginación (opcional) -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <!-- Agrega la lógica de paginación aquí -->
+        </ul>
+    </nav>
+</div>
+
+
+
+
+<div
+  class="modal fade"
+  id="subirPdfModal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg"></div>
+</div>
+
+{% include "partials/footer.html" %}
+<!---->
+{% endblock content %}
+<!---->
+{% block extra_js %}
+
+
+<!-- third party js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-select/js/dataTables.select.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+<!-- third party js ends -->
+
+<!-- Datatables init -->
+<script src="{% static 'js/pages/datatables.init.js' %}"></script>
+
+<script>
+    function subirPdfModal(url) {
+        $("#subirPdfModal").load(url, function () {
+          $(this).modal("show");
+        });
+      }
+</script>
+
+
+
+{% endblock extra_js %}

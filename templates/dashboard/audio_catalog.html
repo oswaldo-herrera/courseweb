@@ -1,0 +1,241 @@
+{% extends "dashboard/index.html" %}
+<!---->
+{% load static %}
+{% load permissions_tags %}
+
+
+<!---->
+{% block title %}Datatables{% endblock title %}
+<!---->
+{% block extra_css %}
+
+<!-- third party css -->
+<link
+  href="{% static 'libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{% static 'libs/datatables.net-select-bs5/css//select.bootstrap5.min.css' %}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<!-- third party css end -->
+
+{% endblock extra_css %}
+<!---->
+{% block topbar %}
+<!---->
+<!---->
+{% include "partials/topbar.html" with pagetitle="Videos" %}
+<!---->
+{% endblock topbar %}
+<!---->
+{% block content %}
+
+<style>
+    .video-thumbnail {
+        cursor: pointer;
+        transition: transform 0.3s ease; /* Transición suave */
+    }
+
+    .video-thumbnail:hover {
+        transform: scale(1.1); /* Aumenta el tamaño en un 10% */
+    }
+ 
+    .glass-card {
+        background: #000000; /* White background with opacity */
+        /*border-radius: 15px;  Rounded corners */
+        backdrop-filter: blur(10px); /* Blur effect */
+        -webkit-backdrop-filter: blur(10px); /* Safari support */
+        box-shadow: 0 4px 30px rgba(8, 8, 8, 0.251); /* Light shadow */
+        border: 1px solid rgba(255, 255, 255, 0.3); 
+        border-radius: 5% ;
+    }
+
+    .card-img-top {
+        height: 200px; /* Altura fija para la imagen */
+        width: 100%; /* Ancho completo del contenedor */
+        object-fit: cover; /* La imagen cubre todo el espacio disponible manteniendo el aspecto */
+    }
+    
+</style>
+
+<div class="container mt-2">
+    <form method="GET" action="">
+        <div class="d-flex justify-content-between">
+            <div class="input-group mb-3 w-25">
+                <input type="text" name="q" class="form-control" placeholder="Buscar audios..." value="{{ query }}">
+                <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+            </div>
+            <div>
+                <button type="button" class="btn btn-outline-secondary btn-sm "  data-bs-toggle="modal" data-bs-target="#subirAudiosModal" onclick="subirAudioModal('{% url 'dashboard_app:add_audio'  %}')">
+                    Subir Audio
+                </button>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        {% for audio in page_obj %}
+            <div class="col-md-3">
+                <div class="card mb-3 audio-thumbnail glass-card video-thumbnail ">
+                    <img src="{{ audio.image.url }}" class="card-img-top " alt="{{ audio.title }}">
+                    <div class="card-body m-0 p-0">
+                        {% comment %} <h5 class="card-title text-white text-center" style="margin-left:10px;">{{ audio.title }}</h5>
+                        <button class="btn btn-outline-secondary btn-sm w-100 play-btn" id="play-btn-{{ audio.id }}" onclick="toggleAudio('{{ audio.file.url }}', '{{ audio.id }}')">Play</button> {% endcomment %}
+                        <h5 class="card-title text-white text-center pt-2" style="margin-left:10px;">{{ audio.title }}</h5>
+                        <button class="btn btn-outline-secondary btn-sm w-100 play-btn" id="play-btn-{{ audio.id }}" onclick="toggleAudio('{{ audio.file.url }}', '{{ audio.id }}')">Play</button>
+                        <button class="btn btn-outline-secondary btn-sm w-100 pause-btn d-none" id="pause-btn-{{ audio.id }}" onclick="pauseAudio('{{ audio.id }}')">Pause</button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Paginación -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1{% if query %}&q={{ query }}{% endif %}" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+<div
+  class="modal fade"
+  id="subirAudiosModal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg"></div>
+</div>
+
+
+{% include "partials/footer.html" %}
+<!---->
+{% endblock content %}
+<!---->
+{% block extra_js %}
+
+
+<!-- third party js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-select/js/dataTables.select.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+<!-- third party js ends -->
+
+<!-- Datatables init -->
+<script src="{% static 'js/pages/datatables.init.js' %}"></script>
+
+<script>
+    function subirAudioModal(url) {
+        $("#subirAudiosModal").load(url, function () {
+          $(this).modal("show");
+        });
+      }
+</script>
+
+<script>
+    var currentAudio = null;
+    var currentPlayButton = null;
+    var currentPauseButton = null;
+    
+    function toggleAudio(url, id) {
+        var playButton = document.getElementById('play-btn-' + id);
+        var pauseButton = document.getElementById('pause-btn-' + id);
+    
+        if (currentAudio && currentAudio.src !== url) {
+            currentAudio.pause();
+            currentPlayButton.classList.remove('d-none');
+            currentPauseButton.classList.add('d-none');
+        }
+    
+        if (!currentAudio || currentAudio.src !== url) {
+            currentAudio = new Audio(url);
+            currentPlayButton = playButton;
+            currentPauseButton = pauseButton;
+            currentAudio.play();
+            playButton.classList.add('d-none');
+            pauseButton.classList.remove('d-none');
+        } else if (currentAudio.paused) {
+            currentAudio.play();
+            playButton.classList.add('d-none');
+            pauseButton.classList.remove('d-none');
+        } else {
+            currentAudio.pause();
+            playButton.classList.remove('d-none');
+            pauseButton.classList.add('d-none');
+        }
+    
+        currentAudio.onended = function() {
+            playButton.classList.remove('d-none');
+            pauseButton.classList.add('d-none');
+            currentAudio = null;
+            currentPlayButton = null;
+            currentPauseButton = null;
+        };
+    }
+    
+    function pauseAudio(id) {
+        if (currentAudio) {
+            currentAudio.pause();
+            var playButton = document.getElementById('play-btn-' + id);
+            var pauseButton = document.getElementById('pause-btn-' + id);
+            playButton.classList.remove('d-none');
+            pauseButton.classList.add('d-none');
+        }
+    }
+</script>
+
+
+{% endblock extra_js %}

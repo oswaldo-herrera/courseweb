@@ -1,0 +1,31 @@
+{% extends "dashboard/index.html" %}
+
+{% block content %}
+<h2>Asignar Permisos</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="user">Seleccionar Usuario:</label>
+        <select name="user" id="user" class="form-control">
+            <option value="">Seleccione un usuario</option>
+            {% for user in users %}
+                <option value="{{ user.id }}" {% if user.id|stringformat:"s" == selected_user_id %}selected{% endif %}>{{ user.first_name}} {{ user.last_name }} - {{ user.email }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    {% if permissions %}
+    <div class="form-group">
+        <label for="permissions">Seleccionar Permisos:</label>
+        <select name="permissions" id="permissions" class="form-control pb-5 " multiple>
+            {% for permission in permissions %}
+                <option value="{{ permission.id }}" {% if permission in user_permissions %}selected{% endif %}>{{ permission.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-outline-dark btn-sm rounded">Guardar</button>
+    <a href="{% url 'user_app:listar_grupos' %}" class="btn btn-outline-danger btn-sm rounded ">Cancelar</a>
+    {% endif %}
+</form>
+{% endblock %}
