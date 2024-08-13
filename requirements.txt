@@ -2,6 +2,7 @@ arabic-reshaper==3.0.0
 asgiref==3.7.2
 asn1crypto==1.5.1
 backports.zoneinfo==0.2.1
+build==1.1.1
 certifi==2024.2.2
 cffi==1.15.1
 charset-normalizer==3.3.2
@@ -49,6 +50,7 @@ PyJWT==2.8.0
 pyparsing==3.1.2
 pypdf==4.2.0
 pypng==0.20220715.0
+pyproject_hooks==1.1.0
 python-bidi==0.4.2
 python-dateutil==2.9.0.post0
 python3-openid==3.2.0
@@ -63,6 +65,7 @@ sqlparse==0.4.4
 svglib==1.5.1
 sympy==1.10.1
 tinycss2==1.2.1
+tomli==2.0.1
 typing_extensions==4.7.1
 tzdata==2024.1
 tzlocal==5.1
