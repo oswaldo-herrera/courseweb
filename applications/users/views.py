@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from allauth.account.views import SignupView
-import pandas as pd
+
 import base64
 from django.core.files.base import ContentFile
 from PIL import Image
